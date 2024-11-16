@@ -1,0 +1,10 @@
+export const enum SubnetCalculationInitialCombinations {
+  AddressAndSubnetMask,
+  AddressAndSubnetMaskBits,
+  SubnetAddressAndSubnetMaskAndMachineNumber,
+  SubnetAddressAndSubnetMaskBitsAndMachineNumber,
+  MainNetAndSubnetMaskAndSubnetNumberAndMachineNumber,
+  MainNetAndSubnetMaskBitsAndSubnetNumberAndMachineNumber,
+  MainNetAndSubnetNumberAndMinNumberOfMachinesParSubnetAndMachineNumber,
+  MainNetAndSubnetNumberAndMinNumberOfSubnetsAndMachineNumber,
+}

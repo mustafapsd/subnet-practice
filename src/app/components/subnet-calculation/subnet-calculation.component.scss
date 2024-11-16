@@ -1,0 +1,23 @@
+.subnet-calculation {
+  width: 40rem;
+  max-width: 70vw;
+
+  display: grid;
+  position: relative;
+  gap: 1rem;
+
+  .ip-address-inputs {
+    display: flex;
+    align-items: center;
+
+    .slash {
+      font-size: 1.5rem;
+      padding: 0 .5rem;
+    }
+
+    input {
+      width: 3rem;
+      display: block;
+    }
+  }
+}

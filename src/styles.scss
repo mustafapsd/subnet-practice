@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}

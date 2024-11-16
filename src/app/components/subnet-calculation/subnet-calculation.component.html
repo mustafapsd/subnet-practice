@@ -1,0 +1,15 @@
+<form class="subnet-calculation" [formGroup]="subnetForm">
+  <div class="form-input">
+    <label for="ip-address">IP Address</label>
+    <div class="ip-address-inputs">
+      <app-address-input formControlName="address"></app-address-input>
+      <div class="slash">/</div>
+      <input type="number" min="0" max="32" formControlName="subnetMaskBits" />
+    </div>
+  </div>
+
+  <div class="form-input">
+    <label for="subnet-mask">Subnet Mask</label>
+    <app-address-input formControlName="subnetMask"></app-address-input>
+  </div>
+</form>
