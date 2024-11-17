@@ -1,0 +1,30 @@
+.results {
+  display: grid;
+  gap: 1rem;
+
+  button {
+    width: fit-content;
+  }
+
+  .card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .75rem;
+
+    h2 {
+      grid-column: 1 / -1;
+      margin: 0;
+    }
+
+    .result-row {
+      display: grid;
+      grid-template-columns: subgrid;
+      grid-column: 1 / -1;
+      padding-bottom: .75rem;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid #ddd;
+      }
+    }
+  }
+}

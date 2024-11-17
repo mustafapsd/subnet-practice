@@ -1,1 +1,88 @@
-<p>results works!</p>
+<div class="results">
+  <button (click)="toggleResults()">
+    @if (showResults) {
+    <img src="assets/images/eye-slash.svg" alt="Eye Slash Icon" />
+    <span>Hide Results</span>
+    } @else {
+    <img src="assets/images/eye.svg" alt="Eye Icon" />
+    <span>Show Results</span> }
+  </button>
+
+  @if (showResults) {
+  <div class="card" #resultsCard>
+    <h2>Results</h2>
+
+    @if (subnetCalculationService.subnetFinalResult; as result) {
+    <div class="result-row">
+      <div class="key">Ip Address</div>
+      <div class="value">{{ result.address }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">Subnet Mask</div>
+      <div class="value">{{ result.subnetMask }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">Subnet Mask Bits</div>
+      <div class="value">{{ result.subnetMaskBits }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">Subnetwork</div>
+      <div class="value">{{ result.subnetwork }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">Subnet Broadcast</div>
+      <div class="value">{{ result.subnetBroadcast }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">First Machine</div>
+      <div class="value">{{ result.firstMachine }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">Last Machine</div>
+      <div class="value">{{ result.lastMachine }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">Main Network</div>
+      <div class="value">{{ result.mainNetwork }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">Nth Machine</div>
+      <div class="value">{{ result.nthMachine }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">Nth Usable Subnet</div>
+      <div class="value">{{ result.nthUsableSubnet }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">Subnet Class</div>
+      <div class="value">{{ result.subnetClass }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">Divided Networks Count</div>
+      <div class="value">{{ result.dividedNetworksCount }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">Machine Count Per Subnet</div>
+      <div class="value">{{ result.machineCountPerSubnet }}</div>
+    </div>
+
+    <div class="result-row">
+      <div class="key">Result</div>
+      <div class="value">{{ result.result | resultToSentence }}</div>
+    </div>
+    }
+  </div>
+  }
+</div>

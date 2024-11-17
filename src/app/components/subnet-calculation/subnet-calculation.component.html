@@ -12,4 +12,116 @@
     <label for="subnet-mask">Subnet Mask</label>
     <app-address-input formControlName="subnetMask"></app-address-input>
   </div>
+
+  <div class="form-input">
+    <label for="network-address">Subnetwork Address</label>
+    <app-address-input formControlName="subnetwork"></app-address-input>
+  </div>
+
+  <div class="form-input">
+    <label for="broadcast-address">Subnet Broadcast Address</label>
+    <app-address-input formControlName="subnetBroadcast"></app-address-input>
+  </div>
+
+  <div class="form-input">
+    <label for="host-address-range">First Machine Address</label>
+    <app-address-input formControlName="firstMachine"></app-address-input>
+  </div>
+
+  <div class="form-input">
+    <label for="host-address-range">Last Machine Address</label>
+    <app-address-input formControlName="lastMachine"></app-address-input>
+  </div>
+
+  <div class="form-input">
+    <label for="host-address-range">Main Network Address</label>
+    <app-address-input formControlName="mainNetwork"></app-address-input>
+  </div>
+
+  <div class="sentence-questions card">
+    <div class="sentence-form">
+      <div class="sentence">This is the</div>
+
+      <div class="sentence-input">
+        <input type="number" min="0" formControlName="nthMachine" />th
+      </div>
+
+      <div class="sentence">machine address in the subnet.</div>
+    </div>
+
+    <!-- nthUsableSubnet -->
+    <div class="sentence-form">
+      <div class="sentence">This is the</div>
+
+      <div class="sentence-input">
+        <input type="number" min="0" formControlName="nthUsableSubnet" />th
+      </div>
+
+      <div class="sentence">usable subnet in this class</div>
+
+      <div class="sentence-input">
+        <input
+          type="text"
+          class="net-class-input"
+          formControlName="subnetClass"
+        />
+      </div>
+
+      <div class="sentence">network.</div>
+    </div>
+
+    <div class="sentence-form">
+      <div class="sentence">That has been divided into</div>
+
+      <div class="sentence-input">
+        <input type="number" min="0" formControlName="dividedNetworksCount" />
+      </div>
+
+      <div class="sentence">usable subnets, with each</div>
+
+      <div class="sentence-input">
+        <input type="number" min="0" formControlName="machineCountPerSubnet" />
+      </div>
+
+      <div class="sentence">machine maximum.</div>
+    </div>
+
+    <div class="sentence-form">
+      <div class="sentence">This seems to be a</div>
+
+      <div class="sentence-input">
+        <select formControlName="result">
+          <option value="valid">valid</option>
+
+          <option value="machineAddressIsSubnetAddress">
+            invalid (machine address is subnet address)
+          </option>
+
+          <option value="machineAddressIsBroadcastAddress">
+            invalid (machine address is broadcast address)
+          </option>
+
+          <option value="subnetBitsInNetworkAddressIsAllOnes">
+            invalid (subnet bits in network address is all ones)
+          </option>
+
+          <option value="zerothSubnet">invalid (zeroth subnet)</option>
+        </select>
+      </div>
+
+      <div class="sentence">combination.</div>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button type="button" (click)="checkResults()">
+      <img src="assets/images/check.svg" alt="Check Icon" />
+      Check Answers
+    </button>
+
+    <button type="button" (click)="newQuestion()">
+      <img src="assets/images/refresh.svg" alt="Refresh Icon" />
+      New Question
+    </button>
+  </div>
 </form>

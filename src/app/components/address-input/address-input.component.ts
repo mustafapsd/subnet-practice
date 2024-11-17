@@ -1,10 +1,12 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   Output,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -31,6 +33,8 @@ export class AddressInputComponent implements ControlValueAccessor, OnChanges {
   @Output() addressChange: EventEmitter<string> = new EventEmitter<string>();
 
   @Input() disabled = false;
+
+  @ViewChild('addressInput') addressInput!: ElementRef<HTMLElement>;
 
   octets: Record<string, number | null> = {
     octet1: null,
@@ -73,5 +77,68 @@ export class AddressInputComponent implements ControlValueAccessor, OnChanges {
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
+  }
+
+  onKeyDown(event: KeyboardEvent, octet: string): void {
+    const target = event.target as HTMLInputElement;
+    const value = target.value;
+
+    if (event.key === 'Tab') {
+      return;
+    }
+
+    if (event.key === 'Backspace') {
+      if (this.octets[octet] === null) {
+        this.focusPreviousOctet(octet);
+      }
+      return;
+    }
+
+    if (event.key === '.') {
+      event.preventDefault();
+      this.focusNextOctet(octet);
+      return;
+    }
+
+    if (event.key === 'ArrowLeft') {
+      this.focusPreviousOctet(octet);
+      return;
+    }
+
+    if (event.key === 'ArrowRight') {
+      this.focusNextOctet(octet);
+      return;
+    }
+
+    if (value.length === 3) {
+      this.focusNextOctet(octet);
+    }
+  }
+
+  focusNextOctet(octet: string): void {
+    const octetNumber = Number(octet.replace('octet', ''));
+    const nextOctet = `octet${octetNumber + 1}`;
+
+    if (this.octets[nextOctet] === null) {
+      this.focusElement(nextOctet);
+    }
+  }
+
+  focusPreviousOctet(octet: string): void {
+    const octetNumber = Number(octet.replace('octet', ''));
+    const previousOctet = `octet${octetNumber - 1}`;
+
+    if (this.octets[previousOctet] === null) {
+      this.focusElement(previousOctet);
+    }
+  }
+
+  focusElement(elementId: string): void {
+    const mainElement = this.addressInput.nativeElement;
+    const element = mainElement.querySelector(`#${elementId}`) as HTMLElement;
+
+    if (element) {
+      element.focus();
+    }
   }
 }

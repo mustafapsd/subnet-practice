@@ -1,26 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 import {
   SubnetCalculationFormValue,
   SubnetCalculationResult,
 } from '../models/subnet-calculation-form';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SubnetCalculationInitialCombinations } from '../models/subnet-calculation-start';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SubnetCalculationService {
-  subnetCalculationForm$ = new Subject<SubnetCalculationFormValue>();
   subnetFinalResult!: SubnetCalculationFormValue;
 
-  constructor() {
-    this.subnetCalculationForm$
-      .pipe(takeUntilDestroyed())
-      .subscribe((formValue) => {
-        console.log('Received form value:', formValue);
-      });
-  }
+  constructor() {}
 
   getInitialFormValue(): Partial<SubnetCalculationFormValue> {
     const initialFormType = this.getRandomNumber(0, 7);
@@ -92,24 +83,21 @@ export class SubnetCalculationService {
         0,
         255
       )}.${this.getRandomNumber(0, 255)}.${this.getRandomNumber(0, 255)}`,
-      subnetMask: `${this.getRandomNumber(0, 255)}.${this.getRandomNumber(
-        0,
-        255
-      )}.${this.getRandomNumber(0, 255)}.${this.getRandomNumber(0, 255)}`,
+      subnetMaskBits: this.getRandomNumber(1, 30),
     };
   }
 
   private calculateResult() {
     let result;
     let address;
-    let subnetMask;
+    let subnetMaskBits;
 
     while (true) {
       try {
         const randomAddresses = this.getRandomAddressWithSubnetMask();
         address = randomAddresses.address;
-        subnetMask = randomAddresses.subnetMask;
-        result = this.calculateNetworkInfo(address, subnetMask);
+        subnetMaskBits = randomAddresses.subnetMaskBits;
+        result = this.calculateNetworkInfo(address, subnetMaskBits);
         break; // Exit the loop if no error is thrown
       } catch (error) {
         // Optionally log the error or handle it
@@ -119,23 +107,19 @@ export class SubnetCalculationService {
 
     this.subnetFinalResult = {
       address,
-      subnetMask,
+      subnetMask: result.subnetMask,
       subnetMaskBits: result.subnetMaskBits,
       subnetwork: result.subnetwork,
       subnetBroadcast: result.subnetBroadcast,
       firstMachine: result.firstMachine,
       lastMachine: result.lastMachine,
       mainNetwork: result.mainNetwork,
-      nthMachine:
-        result.possibleMachines.findIndex((machine) => machine === address) + 1,
-      nthUsableSubnet:
-        result.possibleSubnets.findIndex(
-          (subnet) => subnet === result.subnetwork
-        ) + 1,
+      nthMachine: result.nMachine,
+      nthUsableSubnet: result.nSubnet,
       subnetClass: result.ipClass,
       dividedNetworksCount: result.dividedNetworksCount,
       machineCountPerSubnet: result.machineCountPerSubnet,
-      result: 'valid',
+      result: result.result,
     };
   }
 
@@ -153,9 +137,10 @@ export class SubnetCalculationService {
       .join('.');
   }
 
-  private calculateNetworkInfo(ip: string, subnetMask: string) {
+  private calculateNetworkInfo(ip: string, subnetMaskBits: number) {
     const binaryIp = this.ipToBinary(ip);
-    const binarySubnetMask = this.ipToBinary(subnetMask);
+    const binarySubnetMask = '1'.repeat(subnetMaskBits).padEnd(32, '0');
+    const subnetMask = this.binaryToIp(binarySubnetMask);
 
     // Network Address Calculation
     const networkAddressBinary = (
@@ -210,51 +195,31 @@ export class SubnetCalculationService {
     }
 
     // Calculate Subnet Bits and Counts
-    const subnetMaskBits = binarySubnetMask.split('1').length - 1;
     const hostBits = 32 - subnetMaskBits;
     const machineCountPerSubnet = 2 ** hostBits - 2;
 
     // Calculate Divided Networks Count within the classful main network
     const mainNetworkBits =
       ipClass === 'A' ? 8 : ipClass === 'B' ? 16 : ipClass === 'C' ? 24 : 0;
-    const dividedNetworksCount =
-      subnetMaskBits > mainNetworkBits
-        ? 2 ** (subnetMaskBits - mainNetworkBits)
-        : 1;
+    const subnetBits = subnetMaskBits - mainNetworkBits;
+    const dividedNetworksCount = subnetBits > 0 ? 2 ** subnetBits : 1;
 
     if (dividedNetworksCount === 0 || subnetMaskBits === 0) {
       throw new Error('Invalid subnet mask or divided networks count.');
     }
 
-    const possibleSubnets: string[] = [];
     const subnetSize = 2 ** hostBits;
 
-    // Calculate possible subnets within main network
-    for (let i = 1; i < dividedNetworksCount - 1; i++) {
-      const subnetBinary = (
-        BigInt('0b' + this.ipToBinary(mainNetwork)) + BigInt(i * subnetSize)
-      )
-        .toString(2)
-        .padStart(32, '0');
-      const subnetAddress = this.binaryToIp(subnetBinary);
-      if (subnetAddress === 'N/A') {
-        throw new Error('Invalid subnet address.');
-      }
-      possibleSubnets.push(subnetAddress);
-    }
+    // Calculate nth Subnet within main network
+    const mainNetworkBinary = this.ipToBinary(mainNetwork);
+    const subnetOffset =
+      BigInt('0b' + networkAddressBinary) - BigInt('0b' + mainNetworkBinary);
+    const nSubnet = Number(subnetOffset / BigInt(subnetSize));
 
-    // Possible Machines Calculation
-    const possibleMachines: string[] = [];
-    for (let i = 1n; i <= BigInt(machineCountPerSubnet); i++) {
-      const machineIpBinary = (BigInt('0b' + networkAddressBinary) + i)
-        .toString(2)
-        .padStart(32, '0');
-      const machineIp = this.binaryToIp(machineIpBinary);
-      if (machineIp === 'N/A') {
-        throw new Error('Invalid machine IP address.');
-      }
-      possibleMachines.push(machineIp);
-    }
+    // Calculate nth Machine IP within current subnet
+    const machineOffset =
+      BigInt('0b' + binaryIp) - BigInt('0b' + networkAddressBinary);
+    const nMachine = Number(machineOffset - BigInt(1)) + 1; // Adjusting for the first usable IP
 
     // Determine the Result
     let result: SubnetCalculationResult;
@@ -272,6 +237,7 @@ export class SubnetCalculationService {
 
     return {
       result,
+      subnetMask,
       subnetwork,
       subnetBroadcast,
       firstMachine,
@@ -281,8 +247,8 @@ export class SubnetCalculationService {
       dividedNetworksCount,
       machineCountPerSubnet,
       subnetMaskBits,
-      possibleMachines,
-      possibleSubnets,
+      nSubnet,
+      nMachine,
     };
   }
 }

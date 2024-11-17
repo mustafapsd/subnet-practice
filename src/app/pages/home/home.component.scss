@@ -7,6 +7,44 @@
   .body {
     flex: 1;
     overflow: auto;
-    padding: 0 4rem;
+    padding: 1rem 4rem;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+
+    position: relative;
+
+    h1 {
+      line-height: normal;
+      height: fit-content;
+      margin-top: 0;
+    }
+
+    .form {
+      width: 100%;
+      position: relative;
+    }
+  }
+}
+
+
+@media (max-width: 768px) {
+  .home-page {
+    .body {
+      padding: 1rem;
+
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 1366px) {
+  .home-page {
+    .body {
+      padding: 1rem;
+
+      grid-template-columns: 1fr;
+    }
   }
 }
