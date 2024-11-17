@@ -1,27 +1,79 @@
-# SubnetPractise
+# Subnet Practise
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.6.
+This project is a web application for practicing subnet calculations. It is built using Angular and provides an interactive interface for users to input IP addresses and subnet masks, and view the calculated results.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Input IP address and subnet mask
+- Calculate and display subnet information
+- Validate user inputs
+- Display results in a user-friendly format
 
-## Code scaffolding
+## Project Structure
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+````
+src/
+app/
+components/
+address-input/
+footer/
+header/
+results/
+subnet-calculation/
+models/
+pages/
+home/
+state/
+assets/
+index.html
+main.ts
+styles.scss
+````
 
-## Build
+## Getting Started
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Prerequisites
 
-## Running unit tests
+- Node.js
+- Angular CLI
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Installation
 
-## Running end-to-end tests
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-username/subnet-practise.git
+2. Navigate to the project directory:
+   ```sh
+   cd subnet-practise
+   ```
+  
+3. Install the dependencies:
+   ```sh
+   npm install
+   ```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Running the Application
 
-## Further help
+To start the development server, run:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```sh
+npm start
+```
+
+The application will be available at `http://localhost:2212/`.
+
+### Running Tests
+
+To execute the unit tests, run:
+
+```sh
+npm test
+```
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.
