@@ -1,12 +1,19 @@
 {
   "name": "subnet-practise",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "publisher": {
+    "name": "Mustafa Dağlıoğlu",
+    "url": "https://github.com/mustafapsd/subnet-practice/tree/gh-pages",
+    "email": "mustafa.psd@yandex.com",
+    "github": "https://github.com/mustafapsd"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 2212",
-    "build": "ng build",
+    "build": "ng build --base-href \"https://mustafapsd.github.io/subnet-practice/\"",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "publish": "gh-pages -d dist/subnet-practise/browser -b gh-pages"
   },
   "private": true,
   "dependencies": {
