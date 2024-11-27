@@ -141,4 +141,12 @@ export class AddressInputComponent implements ControlValueAccessor, OnChanges {
       element.focus();
     }
   }
+
+  updateValue() {
+    const octets = Object.values(this.octets)
+      .map((octet) => (octet === null ? '' : octet))
+      .join('.');
+
+    this.addressChange.emit(octets);
+  }
 }

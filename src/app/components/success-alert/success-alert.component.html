@@ -1,0 +1,23 @@
+<div class="success-alert">
+  <div class="overlay"></div>
+
+  <div class="alert">
+    <div class="alert-header">
+      <h3>Success</h3>
+    </div>
+    <div class="alert-body">
+      <p>
+        All your answers are correct. You have successfully completed the
+        question. You can start a new question by clicking the button below.
+      </p>
+    </div>
+
+    <div class="alert-footer">
+      <button (click)="closeAlert()">Close</button>
+
+      <button (click)="newQuestionRequested.emit(); closeAlert()">
+        New Question
+      </button>
+    </div>
+  </div>
+</div>

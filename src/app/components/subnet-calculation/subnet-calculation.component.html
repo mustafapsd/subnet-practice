@@ -125,3 +125,10 @@
     </button>
   </div>
 </form>
+
+@if (showSuccessAlert) {
+<app-success-alert
+  [(showAlert)]="showSuccessAlert"
+  (newQuestionRequested)="newQuestion()"
+></app-success-alert>
+}

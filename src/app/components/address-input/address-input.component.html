@@ -7,6 +7,7 @@
       name="octet1"
       id="octet1"
       [(ngModel)]="octets['octet1']"
+      (ngModelChange)="updateValue()"
     />
     <div class="dot">.</div>
     <input
@@ -16,6 +17,7 @@
       name="octet2"
       id="octet2"
       [(ngModel)]="octets['octet2']"
+      (ngModelChange)="updateValue()"
     />
     <div class="dot">.</div>
     <input
@@ -25,6 +27,7 @@
       name="octet3"
       id="octet3"
       [(ngModel)]="octets['octet3']"
+      (ngModelChange)="updateValue()"
     />
     <div class="dot">.</div>
     <input
@@ -34,6 +37,7 @@
       name="octet4"
       id="octet4"
       [(ngModel)]="octets['octet4']"
+      (ngModelChange)="updateValue()"
     />
   </div>
 </div>

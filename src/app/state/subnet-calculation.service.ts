@@ -214,7 +214,7 @@ export class SubnetCalculationService {
     const mainNetworkBinary = this.ipToBinary(mainNetwork);
     const subnetOffset =
       BigInt('0b' + networkAddressBinary) - BigInt('0b' + mainNetworkBinary);
-    const nSubnet = Number(subnetOffset / BigInt(subnetSize));
+    const nSubnet = Number(subnetOffset / BigInt(subnetSize)) + 1;
 
     // Calculate nth Machine IP within current subnet
     const machineOffset =

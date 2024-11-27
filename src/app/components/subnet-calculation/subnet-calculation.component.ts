@@ -6,11 +6,12 @@ import {
 } from '../../models/subnet-calculation-form';
 import { SubnetCalculationService } from '../../state/subnet-calculation.service';
 import { AddressInputComponent } from '../address-input/address-input.component';
+import { SuccessAlertComponent } from '../success-alert/success-alert.component';
 
 @Component({
   selector: 'app-subnet-calculation',
   standalone: true,
-  imports: [AddressInputComponent, ReactiveFormsModule],
+  imports: [AddressInputComponent, ReactiveFormsModule, SuccessAlertComponent],
   templateUrl: './subnet-calculation.component.html',
   styleUrl: './subnet-calculation.component.scss',
 })
@@ -33,6 +34,8 @@ export class SubnetCalculationComponent implements OnInit {
       result: new FormControl<SubnetCalculationResult>('valid'),
     } as SubnetCalculationForm);
 
+  showSuccessAlert = false;
+
   constructor(private subnetCalculationService: SubnetCalculationService) {}
 
   ngOnInit(): void {
@@ -54,6 +57,10 @@ export class SubnetCalculationComponent implements OnInit {
         .get(key)
         ?.setErrors(isCorrect ? null : { falseResult: true });
     });
+
+    if (this.subnetForm.valid) {
+      this.showSuccessAlert = true;
+    }
   }
 
   newQuestion(): void {
